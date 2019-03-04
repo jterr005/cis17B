@@ -1,6 +1,6 @@
-# csc17B
+# Pac-Man repository
 
-* Pac-Man repository
+* First Due Date - April 22nd
 * 
 * Authors:
 * Jason Terrazas
