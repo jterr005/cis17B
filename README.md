@@ -1,4 +1,4 @@
-# cis17B
+# csc17B
 
 * Pac-Man repository
 * 
