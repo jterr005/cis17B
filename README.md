@@ -1,5 +1,5 @@
 # cis17B
-* 
+
 * Pac-Man repository
 * 
 * Authors:
