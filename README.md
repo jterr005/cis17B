@@ -4,4 +4,5 @@
  
 * Authors
 - Jason Terrazas
+- Juan D Tellez
 - (add your names here)
