@@ -1,3 +1,5 @@
+// the compile code is g++ main.cpp Jug.cpp -o main 
+
 #include <iostream>
 #include <string>
 #include "Jug.h"
