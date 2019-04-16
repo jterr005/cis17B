@@ -6,3 +6,4 @@
 - Jason Terrazas
 - Juan D Tellez
 - James Ojeda
+- Jason Eastman 
