@@ -31,4 +31,4 @@ class GameMap {
 public:
 	GameMap();
 	~GameMap();
-}
+} 
