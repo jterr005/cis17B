@@ -39,9 +39,10 @@ public:
 	int pathFind(string &solution); // Finds shortest path to specified coordinates
 
 	// Helper Functions
-	void setCornerNeighbors(unsigned int);
 
 private:
+	const int X_MAX = 32;
+	const int Y_MAX = 34;
 	int goal;
 	vector<Vertex> graph(1088);     // Fixed map size
 	// anything else you need 
