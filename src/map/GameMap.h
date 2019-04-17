@@ -9,19 +9,24 @@
 #include <stack>    // stacks
 using namespace std;
 
+// Global Variables
+const int X_MAX = 32;
+const int Y_MAX = 34;
+const int TOTALSIZE = X_MAX * Y_MAX;
+
 struct Vertex {
 public:
-	pair<int, int> position;           // x & y coordinates
-	vector<pair<int, int>> neighbors;  // list of the indexes of connected verticies and the cost to travel that edge
-	int distance;                      // FELT CUTE, MIGHT DELETE LATER
-	Vertex* prevV;                     // FELT CUTE, MIGHT DELETE LATER
+	pair<int, int> position;            // x & y coordinates
+	vector<pair<int, int> > neighbors;  // list of the indexes of connected verticies and the cost to travel that edge
+	int distance;                       // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING 
+	Vertex* prevV;                      // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING
 
 	Vertex(int x, int y) {
 		position.first = x;
 		position.second = y;
-		vector<pair<int, int>> neighbors;
-		distance = INT_MAX;              // FELT CUTE, MIGHT DELETE LATER
-		prevV = 0;                       // FELT CUTE, MIGHT DELETE LATER
+		vector<pair<int, int> > neighbors;
+		distance = INT_MAX;               // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING
+		prevV = 0;                        // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING
 	}
 
 	~Vertex() {}
@@ -36,15 +41,13 @@ public:
 	//returns -1 invalid inputs. solution set to empty string.
 	//returns 0 if inputs are valid but a solution does not exist. solution set to empty string.
 	//returns 1 if solution is found and stores solution steps in solution string.
-	int pathFind(string &solution); // Finds shortest path to specified coordinates
+	int pathFind(string &solution);     // Finds shortest path to specified coordinates
 
 	// Helper Functions
 
 private:
-	const int X_MAX = 32;
-	const int Y_MAX = 34;
 	int goal;
-	vector<Vertex> graph(1088);     // Fixed map size
+	vector<Vertex> graph;               // Fixed map size
 	// anything else you need 
 };
 
