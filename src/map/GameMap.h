@@ -18,14 +18,14 @@ struct Vertex {
 public:
 	pair<int, int> position;            // x & y coordinates
 	vector<pair<int, int> > neighbors;  // list of the indexes of connected verticies and the cost to travel that edge
-	int distance;                       // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING 
+	int distance;                       // Keeps track of how far current Vertex is from starting vertex for pathfinding
 	Vertex* prevV;                      // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING
 
 	Vertex(int x, int y) {
 		position.first = x;
 		position.second = y;
 		vector<pair<int, int> > neighbors;
-		distance = INT_MAX;               // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING
+		distance = INT_MAX;               // Keeps track of how far current Vertex is from starting vertex for pathfinding
 		prevV = 0;                        // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING
 	}
 

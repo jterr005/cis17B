@@ -26,56 +26,63 @@ GameMap::GameMap() {
 		   Each corner vertex must have 2 neighbors */
 		if(i == 0) {
 			// Bottom Left Corner
-			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
 		}
 		else if(i == 31) {
 			// Bottom Right Corner
-			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
 		}
 		else if(i == 1056) {
 			// Top Left Corner
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
 		}
 		else if(i == 1087) {
 			// Top Right Corner
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
 		}
 
 		/* Initializes the side's neighbors.
 		   Each side vertex must have 3 neighbors */
 		if(currY == 0 && (i != 0 && i != 31)) {
 			// Bottom Side
-			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
 		}
 		else if(currX == 0 && (i != 0 && i != 1056)) {
 			// Left Side
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
 		}
 		else if(currX == 31 && (i != 31 && i != 1087)) {
 			// Right Side
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
-			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
 		}
 		else if(currY == 33 && (i != 1056 && i != 1087)) {
 			// Top Side
-			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
 		}
 
 		/* Initializes the body's neighbors. 
 		   Each body vertex must have 4 neighbors */
 		if(currY != 0 && currY != 33 && currX != 0 && currX != 31) {
 			// Body
+			if(currY == 1) {
+				// Bottom Left Corner
+				if(i == 1 + X_MAX) {
+					graph.at(i).neighbors.second = 
+				}
+			}
+			
 			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
 			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
 			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
@@ -83,6 +90,8 @@ GameMap::GameMap() {
 		}
 
 	}
+
+	// Start spawning
 
 	// // Test Graph with Outputs
 	// for(unsigned i = 0; i < graph.size(); ++i) {
