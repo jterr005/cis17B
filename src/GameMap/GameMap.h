@@ -44,6 +44,10 @@ public:
 	int pathFind(string &solution);     // Finds shortest path to specified coordinates
 
 	// Helper Functions
+	void printMap();
+	void buildMapBody(int, int, int);
+	void buildMapEdges(int, int, int);
+	void buildMapCorners(int, int, int);
 
 private:
 	int goal;

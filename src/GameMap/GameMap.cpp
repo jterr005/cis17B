@@ -24,145 +24,33 @@ GameMap::GameMap() {
 
 		/* Initializes the corner's neighbors. Static since only 4 corners.
 		   Each corner vertex must have 2 neighbors */
-		if(i == 0) {
-			// Bottom Left Corner
-			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
-		}
-		else if(i == 31) {
-			// Bottom Right Corner
-			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
-		}
-		else if(i == 1056) {
-			// Top Left Corner
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
-		}
-		else if(i == 1087) {
-			// Top Right Corner
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
-		}
+		buildMapCorners(currX, currY, i);
 
 		/* Initializes the side's neighbors.
 		   Each side vertex must have 3 neighbors */
-		if(currY == 0 && (i != 0 && i != 31)) {
-			// Bottom Side
-			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
-		}
-		else if(currX == 0 && (i != 0 && i != 1056)) {
-			// Left Side
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
-		}
-		else if(currX == (X_MAX - 1) && (i != 31 && i != 1087)) {
-			// Right Side
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
-		}
-		else if(currY == (Y_MAX - 1) && (i != 1056 && i != 1087)) {
-			// Top Side
-			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
-			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
-		}
+		buildMapEdges(currX, currY, i);
 
 		/* Initializes the body's neighbors. 
 		   Each body vertex must have 4 neighbors */
 		if(currY != 0 && currY != (Y_MAX - 1) && currX != 0 && currX != (X_MAX - 1)) {
-			// **Special Case** Bottom Body Vertexes
-			if(currY == 1) {
-				if(i == X_MAX + 1) {
-					// Bottom Left Corner of Body Set
-					graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX)); 
-					graph.at(i).neighbors.push_back(make_pair(i + 1, 1)); 
-					graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
-					graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
-				}
-
-				else if(i == X_MAX*2 - 2) {
-					// Bottom Right Corner of Body Set
-					graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
-					graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
-					graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
-				}
-
-				else {
-					// Rest of Bottom Edge of Body Set
-					graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
-					graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
-				}
-			}
-
-			// **Special Case** Top Body Vertexes
-			else if(currY == 32) {
-				if(i == X_MAX*currY + 1) {
-					// Top Left Corner of Body Set
-					graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
-					graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
-				}
-
-				else if(i == X_MAX* (Y_MAX - 1) - 2) {
-					// Top Right Corner of Body Set
-					graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
-					graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
-				}
-
-				else {
-					// Rest of Top Edge of Body Set
-					graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
-
-				}
-			}
-
-			// **Special Case** Left Body Vertexes
-			else if(currX == 1) {
-				if(!(i == X_MAX + 1) && !(i == X_MAX*2 - 2)) {
-					graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
-					graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
-				}
-			}
-
-			// **Special Case** Right Body Vertexes
-			else if(currX == X_MAX-2) {
-				if(!(i == X_MAX*currY + 1) && !(i == X_MAX* (Y_MAX - 1) - 2)) {
-					graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
-					graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-					graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
-				}
-			}
-
-			else {
-				// Normal Body Vertexes
-				graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
-				graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
-				graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
-				graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
-			}
+			buildMapBody(currX, currY, i);
 		}
 	}
 
-	// Start spawning
+	// Start spawning game objects
 
 	// Test Graph with Outputs
+	printMap();
+}
+
+GameMap::~GameMap() {
+	while(!graph.empty()) {
+		graph.pop_back();
+	}
+}
+
+// Function prints all vertexes, their neighbors and their costs to travel
+void GameMap::printMap() {
 	for(unsigned i = 0; i < graph.size(); ++i) {
 		if(i % 32 == 0) {
 			cout << endl;
@@ -188,8 +76,144 @@ GameMap::GameMap() {
 	}
 }
 
-GameMap::~GameMap() {
-	while(!graph.empty()) {
-		graph.pop_back();
+/* Initializes the body's neighbors. 
+   Each body vertex must have 4 neighbors */
+void GameMap::buildMapBody(int currX, int currY, int i) {
+	// **Special Case** Bottom Body Vertexes
+	if(currY == 1) {
+		if(i == X_MAX + 1) {
+			// Bottom Left Corner of Body Set
+			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX)); 
+			graph.at(i).neighbors.push_back(make_pair(i + 1, 1)); 
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+		}
+
+		else if(i == X_MAX*2 - 2) {
+			// Bottom Right Corner of Body Set
+			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+		}
+
+		else {
+			// Rest of Bottom Edge of Body Set
+			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+		}
+	}
+
+	// **Special Case** Top Body Vertexes
+	else if(currY == 32) {
+		if(i == X_MAX*currY + 1) {
+			// Top Left Corner of Body Set
+			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+		}
+
+		else if(i == X_MAX* (Y_MAX - 1) - 2) {
+			// Top Right Corner of Body Set
+			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+		}
+
+		else {
+			// Rest of Top Edge of Body Set
+			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+
+		}
+	}
+
+	// **Special Case** Left Body Vertexes
+	else if(currX == 1) {
+		if(!(i == X_MAX + 1) && !(i == X_MAX*2 - 2)) {
+			graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+		}
+	}
+
+	// **Special Case** Right Body Vertexes
+	else if(currX == X_MAX-2) {
+		if(!(i == X_MAX*currY + 1) && !(i == X_MAX* (Y_MAX - 1) - 2)) {
+			graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+			graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
+			graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+		}
+	}
+
+	else {
+		// Normal Body Vertexes
+		graph.at(i).neighbors.push_back(make_pair(i - 1, 1));
+		graph.at(i).neighbors.push_back(make_pair(i + 1, 1));
+		graph.at(i).neighbors.push_back(make_pair(i - X_MAX, 1));
+		graph.at(i).neighbors.push_back(make_pair(i + X_MAX, 1));
+	}
+}
+
+/* Initializes the side's neighbors.
+		Each side vertex must have 3 neighbors */
+void GameMap::buildMapEdges(int currX, int currY, int i) {
+	if(currY == 0 && (i != 0 && i != 31)) {
+		// Bottom Side
+		graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+	}
+	else if(currX == 0 && (i != 0 && i != 1056)) {
+		// Left Side
+		graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+	}
+	else if(currX == (X_MAX - 1) && (i != 31 && i != 1087)) {
+		// Right Side
+		graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+	}
+	else if(currY == (Y_MAX - 1) && (i != 1056 && i != 1087)) {
+		// Top Side
+		graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+	}
+	return;
+}
+
+/* Initializes the corner's neighbors. Static since only 4 corners.
+   Each corner vertex must have 2 neighbors */
+void GameMap::buildMapCorners(int currX, int currY, int i) {
+	if(i == 0) {
+		// Bottom Left Corner
+		graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+	}
+	else if(i == 31) {
+		// Bottom Right Corner
+		graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + X_MAX, INT_MAX));
+	}
+	else if(i == 1056) {
+		// Top Left Corner
+		graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i + 1, INT_MAX));
+	}
+	else if(i == 1087) {
+		// Top Right Corner
+		graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
+		graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
 	}
 }
