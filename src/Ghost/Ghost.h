@@ -15,7 +15,6 @@ private:
   void chase();
   void fear();
   void death();
-  
 }
 
 #endif
