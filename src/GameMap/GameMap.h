@@ -10,6 +10,7 @@
 using namespace std;
 
 // Global Variables
+enum vertexType {BotRght, BotLeft, TopRght, TopLeft, VertHall, HoriHall, T_Down, T_Up, T_2Rght, T_2Left, Intrsectns};
 const int X_MAX = 32;
 const int Y_MAX = 34;
 const int TOTALSIZE = X_MAX * Y_MAX;
@@ -42,16 +43,21 @@ public:
 	//returns 0 if inputs are valid but a solution does not exist. solution set to empty string.
 	//returns 1 if solution is found and stores solution steps in solution string.
 	int pathFind(string &solution);     // Finds shortest path to specified coordinates
-
-	// Helper Functions
-	void printMap();
-	void buildMapBody(int, int, int);
-	void buildMapEdges(int, int, int);
-	void buildMapCorners(int, int, int);
+	void printMap();										// Testing purposes. NOT A GUI
 
 private:
 	int goal;
 	vector<Vertex> graph;               // Fixed map size
+
+	// Prototype Functions
+	void buildMapBody(int, int, int);
+	void buildMapEdges(int, int, int);
+	void buildMapCorners(int, int, int);
+	void buildGameWalls(int);
+
+	// Helper Functions
+	void buildWall(int, int);                  // Helps all buildGameWall(int, vertexType) helpers
+	void buildGameWall(int, vertexType);       // Helps buildGameWalls(int)
 	// anything else you need 
 };
 

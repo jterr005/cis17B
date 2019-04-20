@@ -37,12 +37,16 @@ GameMap::GameMap() {
 		}
 	}
 
-	// Start spawning game objects
+	/* Generates game walls */
+	for(unsigned i = X_MAX*3; i < TOTALSIZE; ++i) {
+		buildGameWalls(i);
+	}
 
-	// Test Graph with Outputs
+	/* Test Graph with Outputs */
 	printMap();
 }
 
+/* Deconstructor */
 GameMap::~GameMap() {
 	while(!graph.empty()) {
 		graph.pop_back();
@@ -64,7 +68,19 @@ void GameMap::printMap() {
 	for(unsigned i = 0; i < graph.size(); ++i) {
 		cout << "| " << i << " | - | " << graph.at(i).position.first << ", " << graph.at(i).position.second << " | -> ";
 		for(unsigned j = 0; j < graph.at(i).neighbors.size(); ++j) {
-			cout << "| " << graph.at(i).neighbors.at(j).first << ", ";
+			if(j == 0) {
+				cout << "| " << "LEFT" << ", ";
+			}
+			if(j == 1) {
+				cout << "| " << "RIGHT" << ", ";
+			}
+			if(j == 2) {
+				cout << "| " << "DOWN" << ", ";
+			}
+			if(j == 3) {
+				cout << "| " << "UP" << ", ";
+			}
+			//cout << "| " << graph.at(i).neighbors.at(j).first << ", ";
 			if(graph.at(i).neighbors.at(j).second == INT_MAX) {
 				cout << "INF" << "| -> ";
 			}
@@ -216,4 +232,363 @@ void GameMap::buildMapCorners(int currX, int currY, int i) {
 		graph.at(i).neighbors.push_back(make_pair(i - X_MAX, INT_MAX));
 		graph.at(i).neighbors.push_back(make_pair(i - 1, INT_MAX));
 	}
+}
+
+/* Generates game walls */
+void GameMap::buildGameWalls(int i) {
+	// Assign current x,y to respective variables
+	int currX = graph.at(i).position.first;
+	int currY = graph.at(i).position.second;
+
+	// Left side of playable paths
+	if(currX == 3) {
+		// Generates entire column's walls
+		if(currY == 3 || currY == 9 || currY == 24) {
+			buildGameWall(i, BotLeft);
+			return;
+		}
+
+		if(currY == 6 || currY == 12 || currY == 31) {
+			buildGameWall(i, TopLeft);
+			return;
+		}
+
+		if(currY == 4 || currY == 5 || currY == 10 || currY == 11 || currY == 25 || currY == 26 || currY == 28 || currY == 29 || currY == 30) {
+			buildGameWall(i, VertHall);
+			return;
+		}
+
+		if(currY == 27) {
+			buildGameWall(i, T_2Rght);
+			return;
+		}
+
+		if(currY == 18) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// Right side of playable paths
+	if(currX == 28) {
+		if(currY == 3 || currY == 9 || currY == 24) {
+			buildGameWall(i, BotRght);
+			return;
+		}
+		if(currY == 6 || currY == 12 || currY == 31) {
+			buildGameWall(i, TopRght);
+			return;
+		}
+		if(currY == 4 || currY == 5 || currY == 10 || currY == 11 || currY == 25 || currY == 26 || currY == 28 || currY == 29 || currY == 30) {
+			buildGameWall(i, VertHall);
+			return;
+		}
+		if(currY == 27) {
+			buildGameWall(i, T_2Left);
+			return;
+		}
+		if(currY == 18) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// When x = 4 or 27
+	if(currX == 4 || currX == 27) {
+		if(currY == 3 || currY == 6 || currY == 9 || currY == 12 || currY == 18 || currY == 24 || currY == 27 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// When x = 5 or 26
+	if(currX == 5 || currX == 26) {
+		if(currY == 3 || currY == 12 || currY == 18 || currY == 24 || currY == 27 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+
+		if(currY == 6) {
+			buildGameWall(i, T_Up);
+			return;
+		}
+
+		if(currY == 7 || currY == 8) {
+			buildGameWall(i, VertHall);
+			return;
+		}
+
+		if(currY == 9) {
+			if(currX == 5) {
+				buildGameWall(i, TopRght);
+				return;
+			}
+			if(currY == 26) {
+				buildGameWall(i, TopLeft);
+				return;
+			}
+		}
+	}
+
+	// When x = 6 or 25
+	if(currX == 6 || currX == 25) {
+		if(currY == 3 || currY == 6 || currY == 12 || currY == 18 || currY == 24 || currY == 27 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// When x = 7 or 24
+	if(currX == 7 || currX == 24) {
+		if(currY == 3 || currY == 6 || currY == 12 || currY == 18 || currY == 24 || currY == 27 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// When x = 8 or 23
+	if(currX == 8 || currX == 23) {
+		if(currY == 3) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+		if(currY == 6) {
+			if(currX == 8) {
+				buildGameWall(i, BotRght);
+				return;
+			}
+			if(currX == 23) {
+				buildGameWall(i, BotLeft);
+				return;
+			}
+		}
+		if(currY == 7 || currY == 8 || currY == 10 || currY == 11 || currY == 13 || currY == 14 || currY == 15 || currY == 16 || currY == 17 || currY == 19 || currY == 20 || currY == 21 || currY == 22 || currY == 23 || currY == 25 || currY == 26 || currY == 28 || currY == 29 || currY == 30) {
+			buildGameWall(i, VertHall);
+			return;
+		}
+		if(currY == 12 || currY == 18 || currY == 27) {
+			buildGameWall(i, Intrsectns);
+		}
+		if(currY == 9) {
+			if(currX == 8) {
+				buildGameWall(i, T_2Rght);
+				return;
+			}
+
+			if(currX == 23) {
+				buildGameWall(i, T_2Left);
+				return;
+			}
+		}
+		if(currY == 24) {
+			if(currX == 8) {
+				buildGameWall(i, T_2Left);
+				return;
+			}
+			if(currX == 23) {
+				buildGameWall(i, T_2Rght);
+				return;
+			}
+		}
+		if(currY == 31) {
+			buildGameWall(i, T_Down);
+			return;
+		}
+	}
+
+	// When x = 9 or 22
+	if(currX == 9 || currX == 22) {
+		if(currY == 3 || currY == 9 || currY == 12 || currY == 18 || currY == 27 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// When x = 10 or 21
+	if(currX == 10 || currX == 21) {
+		if(currY == 3 || currY == 9 || currY == 12 || currY == 18 || currY == 27 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// When x = 11 or 20
+	if(currX == 11 || currX == 20) {
+		if(currY == 3 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+		if(currY == 6 || currY == 24) {
+			if(currX == 11) {
+				buildGameWall(i, BotLeft);
+				return;
+			}
+			if(currX == 20) {
+				buildGameWall(i, BotRght);
+				return;
+			}
+		}
+		if(currY == 7 || currY == 8 || currY == 13 || currY == 14 || currY == 16 || currY == 17 || currY == 19 || currY == 20 || currY == 25 || currY == 26) {
+			buildGameWall(i, VertHall);
+			return;
+		}
+		if(currY == 9 || currY == 27) {
+			buildGameWall(i, T_Down);
+			return;
+		}
+		if(currY == 12) {
+			buildGameWall(i, T_Up);
+			return;
+		}
+		if(currY == 15) {
+			if(currX == 11) {
+				buildGameWall(i, T_2Rght);
+				return;
+			}
+			if(currX == 20) {
+				buildGameWall(i, T_2Left);
+				return;
+			}
+		}
+		if(currY == 18) {
+			if(currX == 11) {
+				buildGameWall(i, T_2Left);
+				return;
+			}
+			if(currX == 20) {
+				buildGameWall(i, T_2Rght);
+				return;
+			}
+		}
+		if(currY == 21) {
+			if(currX == 11) {
+				buildGameWall(i, TopLeft);
+				return;
+			}
+			if(currX == 20) {
+				buildGameWall(i, TopRght);
+				return;
+			}
+		}
+	}
+
+	// When x = 12 or 19
+	if(currX == 12 || currX == 19) {
+		if(currY == 3 || currY == 6 || currY == 9 || currY == 12 || currY == 15 || currY == 21 || currY == 24 || currY == 27 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// When x = 13 or 18
+	if(currX == 13 || currX == 18) {
+		if(currY == 3 || currY == 6 || currY == 9 || currY == 12 || currY == 15 || currY == 21 || currY == 24 || currY == 27 || currY == 31) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+
+	// When x = 14 or 17
+	if(currX == 14 || currX == 17) {
+		if(currY == 3 || currY == 9 || currY == 21 || currY == 27) {
+			buildGameWall(i, T_Up);
+			return;
+		}
+
+		if(currY == 4 || currY == 5 || currY == 10 || currY == 11 || currY == 22 || currY == 23 || currY == 28 || currY == 29 || currY == 30) {
+			buildGameWall(i, VertHall);
+			return;
+		}
+
+		if(currY == 15) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+
+		if(currY == 6 || currY == 12 || currY == 24 || currY == 31) {
+			if(currX == 14) {
+				buildGameWall(i, TopRght);
+				return;
+			}
+			if(currX == 17) {
+				buildGameWall(i, TopLeft);
+				return;
+			}
+		}
+	}
+
+	// When x = 15 or 16
+	if(currX == 15 || currX == 16) {
+		if(currY == 3 || currY == 9 || currY == 15 || currY == 21 || currY == 27) {
+			buildGameWall(i, HoriHall);
+			return;
+		}
+	}
+	return;
+}
+
+/* Sets boundaries for corners in playable zone */
+void GameMap::buildGameWall(int i, vertexType type) {
+	switch(type) {
+		case BotRght:
+			buildWall(i, 1);
+			buildWall(i, 2);
+			break;
+
+		case BotLeft:
+			buildWall(i, 0);
+			buildWall(i, 2);
+			break;
+
+		case TopRght:
+			buildWall(i, 1);
+			buildWall(i, 3);
+			break;
+
+		case TopLeft:
+			buildWall(i, 0);
+			buildWall(i, 3);
+			break;
+
+		case VertHall:
+			buildWall(i, 0);
+			buildWall(i, 1);
+			break;
+
+		case HoriHall:
+			buildWall(i, 2);
+			buildWall(i, 3);
+			break;
+
+		case T_Down:
+			buildWall(i, 3);
+			break;
+
+		case T_Up:
+			buildWall(i, 2);
+			break;
+
+		case T_2Rght:
+			buildWall(i, 0);
+			break;
+
+		case T_2Left:
+			buildWall(i, 1);
+			break;
+
+		case Intrsectns:
+			break;
+
+		default:
+			cout << "ERROR: UNKNOWN PATH TYPE DETECTED AT i = " << i;
+			break;
+
+		// next case
+
+	}
+}
+
+void GameMap::buildWall(int currVertex, int currNeighbor) {
+	graph.at(currVertex).neighbors.at(currNeighbor).second = INT_MAX;
+	return;
 }
