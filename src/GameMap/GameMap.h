@@ -10,7 +10,8 @@
 using namespace std;
 
 // Global Variables
-enum vertexType {BotRght, BotLeft, TopRght, TopLeft, VertHall, HoriHall, T_Down, T_Up, T_2Rght, T_2Left, Intrsectns};
+enum pathType {BOTRGHT, BOTLEFT, TOPRGHT, TOPLEFT, VERTHALL, HORIHALL, T_DOWN, T_UP, T_2RGHT, T_2LEFT, INTRSECTNS};
+enum objectType {EMPTY, PACDOT, PACPOWER};
 const int X_MAX = 32;
 const int Y_MAX = 34;
 const int TOTALSIZE = X_MAX * Y_MAX;
@@ -19,6 +20,8 @@ struct Vertex {
 public:
 	pair<int, int> position;            // x & y coordinates
 	vector<pair<int, int> > neighbors;  // list of the indexes of connected verticies and the cost to travel that edge
+	pathType patType;
+	objectType itemType;
 	int distance;                       // Keeps track of how far current Vertex is from starting vertex for pathfinding
 	Vertex* prevV;                      // FELT CUTE, MIGHT DELETE LATER FOR PATHFINDING
 
@@ -57,7 +60,8 @@ private:
 
 	// Helper Functions
 	void buildWall(int, int);                  // Helps all buildGameWall(int, vertexType) helpers
-	void buildGameWall(int, vertexType);       // Helps buildGameWalls(int)
+	void buildGameWall(int, pathType);       // Helps buildGameWalls(int)
+	void setObjectType(int, objectType);       // Helps buildGameWalls(int)
 	// anything else you need 
 };
 

@@ -42,8 +42,7 @@ GameMap::GameMap() {
 		buildGameWalls(i);
 	}
 
-	/* Test Graph with Outputs */
-	printMap();
+
 }
 
 /* Deconstructor */
@@ -90,6 +89,8 @@ void GameMap::printMap() {
 		}
 		cout << endl;
 	}
+	cout << "GameMap Test Complete" << endl << endl;
+	return;
 }
 
 /* Initializes the body's neighbors. 
@@ -244,339 +245,443 @@ void GameMap::buildGameWalls(int i) {
 	if(currX == 3) {
 		// Generates entire column's walls
 		if(currY == 3 || currY == 9 || currY == 24) {
-			buildGameWall(i, BotLeft);
+			buildGameWall(i, BOTLEFT);
+			setObjectType(i, PACDOT);
+		}
+
+		else if(currY == 6 || currY == 12 || currY == 31) {
+			buildGameWall(i, TOPLEFT);
+			setObjectType(i, PACDOT);
+		}
+
+		else if(currY == 4 || currY == 5 || currY == 10 || currY == 11 || currY == 25 || currY == 26 || currY == 28 || currY == 29 || currY == 30) {
+			buildGameWall(i, VERTHALL);
+			setObjectType(i, PACDOT);
+		}
+
+		else if(currY == 27) {
+			buildGameWall(i, T_2RGHT);
+			setObjectType(i, PACDOT);
 			return;
 		}
 
-		if(currY == 6 || currY == 12 || currY == 31) {
-			buildGameWall(i, TopLeft);
-			return;
+		else if(currY == 18) {
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
 
-		if(currY == 4 || currY == 5 || currY == 10 || currY == 11 || currY == 25 || currY == 26 || currY == 28 || currY == 29 || currY == 30) {
-			buildGameWall(i, VertHall);
-			return;
+		// sets powerup vertexes
+		if(currY == 9 || currY == 29) {
+			setObjectType(i, PACPOWER);
+		}
+		// Sets Empty vertexes
+		else if(currY == 18) {
+			setObjectType(i, EMPTY);
 		}
 
-		if(currY == 27) {
-			buildGameWall(i, T_2Rght);
-			return;
-		}
-
-		if(currY == 18) {
-			buildGameWall(i, HoriHall);
-			return;
-		}
+		return;
 	}
 
 	// Right side of playable paths
 	if(currX == 28) {
 		if(currY == 3 || currY == 9 || currY == 24) {
-			buildGameWall(i, BotRght);
-			return;
+			buildGameWall(i, BOTRGHT);
+			setObjectType(i, PACDOT);
 		}
-		if(currY == 6 || currY == 12 || currY == 31) {
-			buildGameWall(i, TopRght);
-			return;
+		else if(currY == 6 || currY == 12 || currY == 31) {
+			buildGameWall(i, TOPRGHT);
+			setObjectType(i, PACDOT);
 		}
-		if(currY == 4 || currY == 5 || currY == 10 || currY == 11 || currY == 25 || currY == 26 || currY == 28 || currY == 29 || currY == 30) {
-			buildGameWall(i, VertHall);
-			return;
+		else if(currY == 4 || currY == 5 || currY == 10 || currY == 11 || currY == 25 || currY == 26 || currY == 28 || currY == 29 || currY == 30) {
+			buildGameWall(i, VERTHALL);
+			setObjectType(i, PACDOT);
 		}
-		if(currY == 27) {
-			buildGameWall(i, T_2Left);
-			return;
+		else if(currY == 27) {
+			buildGameWall(i, T_2LEFT);
+			setObjectType(i, PACDOT);
 		}
-		if(currY == 18) {
-			buildGameWall(i, HoriHall);
-			return;
+		else if(currY == 18) {
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
+
+		// set's PowerUp Vertexes
+		if(currY == 9 || currY == 29) {
+			setObjectType(i, PACPOWER);
+		}
+		// Sets Empty vertexes
+		else if(currY == 18) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 4 or 27
 	if(currX == 4 || currX == 27) {
 		if(currY == 3 || currY == 6 || currY == 9 || currY == 12 || currY == 18 || currY == 24 || currY == 27 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
+
+		if(currY == 18) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 5 or 26
 	if(currX == 5 || currX == 26) {
 		if(currY == 3 || currY == 12 || currY == 18 || currY == 24 || currY == 27 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
 
-		if(currY == 6) {
-			buildGameWall(i, T_Up);
-			return;
+		else if(currY == 6) {
+			buildGameWall(i, T_UP);
+			setObjectType(i, PACDOT);
 		}
 
-		if(currY == 7 || currY == 8) {
-			buildGameWall(i, VertHall);
-			return;
+		else if(currY == 7 || currY == 8) {
+			buildGameWall(i, VERTHALL);
+			setObjectType(i, PACDOT);
 		}
 
-		if(currY == 9) {
+		else if(currY == 9) {
 			if(currX == 5) {
-				buildGameWall(i, TopRght);
-				return;
+				buildGameWall(i, TOPRGHT);
+				setObjectType(i, PACDOT);
 			}
-			if(currY == 26) {
-				buildGameWall(i, TopLeft);
-				return;
+			else if(currY == 26) {
+				buildGameWall(i, TOPLEFT);
+				setObjectType(i, PACDOT);
 			}
 		}
+
+		if(currY == 18) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 6 or 25
 	if(currX == 6 || currX == 25) {
 		if(currY == 3 || currY == 6 || currY == 12 || currY == 18 || currY == 24 || currY == 27 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
+
+		if(currY == 18) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 7 or 24
 	if(currX == 7 || currX == 24) {
 		if(currY == 3 || currY == 6 || currY == 12 || currY == 18 || currY == 24 || currY == 27 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
+
+		if(currY == 18) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 8 or 23
 	if(currX == 8 || currX == 23) {
 		if(currY == 3) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
 		if(currY == 6) {
 			if(currX == 8) {
-				buildGameWall(i, BotRght);
-				return;
+				buildGameWall(i, BOTRGHT);
+				setObjectType(i, PACDOT);
 			}
-			if(currX == 23) {
-				buildGameWall(i, BotLeft);
-				return;
+			else if(currX == 23) {
+				buildGameWall(i, BOTLEFT);
+				setObjectType(i, PACDOT);
 			}
 		}
 		if(currY == 7 || currY == 8 || currY == 10 || currY == 11 || currY == 13 || currY == 14 || currY == 15 || currY == 16 || currY == 17 || currY == 19 || currY == 20 || currY == 21 || currY == 22 || currY == 23 || currY == 25 || currY == 26 || currY == 28 || currY == 29 || currY == 30) {
-			buildGameWall(i, VertHall);
-			return;
+			buildGameWall(i, VERTHALL);
+			setObjectType(i, PACDOT);
 		}
 		if(currY == 12 || currY == 18 || currY == 27) {
-			buildGameWall(i, Intrsectns);
+			buildGameWall(i, INTRSECTNS);
+			setObjectType(i, PACDOT);
 		}
 		if(currY == 9) {
 			if(currX == 8) {
-				buildGameWall(i, T_2Rght);
-				return;
+				buildGameWall(i, T_2RGHT);
+				setObjectType(i, PACDOT);
 			}
 
 			if(currX == 23) {
-				buildGameWall(i, T_2Left);
-				return;
+				buildGameWall(i, T_2LEFT);
+				setObjectType(i, PACDOT);
 			}
 		}
 		if(currY == 24) {
 			if(currX == 8) {
-				buildGameWall(i, T_2Left);
-				return;
+				buildGameWall(i, T_2LEFT);
+				setObjectType(i, PACDOT);
 			}
 			if(currX == 23) {
-				buildGameWall(i, T_2Rght);
-				return;
+				buildGameWall(i, T_2RGHT);
+				setObjectType(i, PACDOT);
 			}
 		}
 		if(currY == 31) {
-			buildGameWall(i, T_Down);
-			return;
+			buildGameWall(i, T_DOWN);
+			setObjectType(i, PACDOT);
 		}
+
+		return;
 	}
 
 	// When x = 9 or 22
 	if(currX == 9 || currX == 22) {
 		if(currY == 3 || currY == 9 || currY == 12 || currY == 18 || currY == 27 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
+
+		if(currY == 18) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 10 or 21
 	if(currX == 10 || currX == 21) {
 		if(currY == 3 || currY == 9 || currY == 12 || currY == 18 || currY == 27 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
+
+		if(currY == 18) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 11 or 20
 	if(currX == 11 || currX == 20) {
 		if(currY == 3 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
 		if(currY == 6 || currY == 24) {
 			if(currX == 11) {
-				buildGameWall(i, BotLeft);
-				return;
+				buildGameWall(i, BOTLEFT);
+				setObjectType(i, PACDOT);
 			}
 			if(currX == 20) {
-				buildGameWall(i, BotRght);
-				return;
+				buildGameWall(i, BOTRGHT);
+				setObjectType(i, PACDOT);
 			}
 		}
 		if(currY == 7 || currY == 8 || currY == 13 || currY == 14 || currY == 16 || currY == 17 || currY == 19 || currY == 20 || currY == 25 || currY == 26) {
-			buildGameWall(i, VertHall);
-			return;
+			buildGameWall(i, VERTHALL);
+			setObjectType(i, PACDOT);
 		}
 		if(currY == 9 || currY == 27) {
-			buildGameWall(i, T_Down);
-			return;
+			buildGameWall(i, T_DOWN);
+			setObjectType(i, PACDOT);
 		}
 		if(currY == 12) {
-			buildGameWall(i, T_Up);
-			return;
+			buildGameWall(i, T_UP);
+			setObjectType(i, PACDOT);
 		}
 		if(currY == 15) {
 			if(currX == 11) {
-				buildGameWall(i, T_2Rght);
-				return;
+				buildGameWall(i, T_2RGHT);
+				setObjectType(i, PACDOT);
 			}
 			if(currX == 20) {
-				buildGameWall(i, T_2Left);
-				return;
+				buildGameWall(i, T_2LEFT);
+				setObjectType(i, PACDOT);
 			}
 		}
 		if(currY == 18) {
 			if(currX == 11) {
-				buildGameWall(i, T_2Left);
-				return;
+				buildGameWall(i, T_2LEFT);
+				setObjectType(i, PACDOT);
 			}
 			if(currX == 20) {
-				buildGameWall(i, T_2Rght);
-				return;
+				buildGameWall(i, T_2RGHT);
+				setObjectType(i, PACDOT);
 			}
 		}
 		if(currY == 21) {
 			if(currX == 11) {
-				buildGameWall(i, TopLeft);
-				return;
+				buildGameWall(i, TOPLEFT);
+				setObjectType(i, PACDOT);
 			}
 			if(currX == 20) {
-				buildGameWall(i, TopRght);
-				return;
+				buildGameWall(i, TOPRGHT);
+				setObjectType(i, PACDOT);
 			}
 		}
+
+		if(currY > 12 || currY < 22) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 12 or 19
 	if(currX == 12 || currX == 19) {
 		if(currY == 3 || currY == 6 || currY == 9 || currY == 12 || currY == 15 || currY == 21 || currY == 24 || currY == 27 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
+
+		if(currY == 15 || currY == 21) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 13 or 18
 	if(currX == 13 || currX == 18) {
 		if(currY == 3 || currY == 6 || currY == 9 || currY == 12 || currY == 15 || currY == 21 || currY == 24 || currY == 27 || currY == 31) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);		
 		}
+		if(currY == 15 || currY == 21) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 14 or 17
 	if(currX == 14 || currX == 17) {
 		if(currY == 3 || currY == 9 || currY == 21 || currY == 27) {
-			buildGameWall(i, T_Up);
-			return;
+			buildGameWall(i, T_UP);
+			setObjectType(i, PACDOT);
 		}
 
 		if(currY == 4 || currY == 5 || currY == 10 || currY == 11 || currY == 22 || currY == 23 || currY == 28 || currY == 29 || currY == 30) {
-			buildGameWall(i, VertHall);
-			return;
+			buildGameWall(i, VERTHALL);
+			setObjectType(i, PACDOT);
 		}
 
 		if(currY == 15) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
 
 		if(currY == 6 || currY == 12 || currY == 24 || currY == 31) {
 			if(currX == 14) {
-				buildGameWall(i, TopRght);
-				return;
+				buildGameWall(i, TOPRGHT);
+				setObjectType(i, PACDOT);
 			}
 			if(currX == 17) {
-				buildGameWall(i, TopLeft);
-				return;
+				buildGameWall(i, TOPLEFT);
+				setObjectType(i, PACDOT);
 			}
 		}
+
+		if(currY == 15 || currY == 21 || currY == 22 || currY == 23) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
 
 	// When x = 15 or 16
 	if(currX == 15 || currX == 16) {
 		if(currY == 3 || currY == 9 || currY == 15 || currY == 21 || currY == 27) {
-			buildGameWall(i, HoriHall);
-			return;
+			buildGameWall(i, HORIHALL);
+			setObjectType(i, PACDOT);
 		}
+
+		if(currY == 15 || currY == 21) {
+			setObjectType(i, EMPTY);
+		}
+
+		return;
 	}
+
+
 	return;
 }
 
 /* Sets boundaries for corners in playable zone */
-void GameMap::buildGameWall(int i, vertexType type) {
+void GameMap::buildGameWall(int i, pathType type) {
 	switch(type) {
-		case BotRght:
+		case BOTRGHT:
 			buildWall(i, 1);
 			buildWall(i, 2);
+			graph.at(i).patType = BOTRGHT;
 			break;
 
-		case BotLeft:
+		case BOTLEFT:
 			buildWall(i, 0);
 			buildWall(i, 2);
+			graph.at(i).patType = BOTLEFT;
 			break;
 
-		case TopRght:
+		case TOPRGHT:
 			buildWall(i, 1);
 			buildWall(i, 3);
+			graph.at(i).patType = TOPRGHT;
 			break;
 
-		case TopLeft:
+		case TOPLEFT:
 			buildWall(i, 0);
 			buildWall(i, 3);
+			graph.at(i).patType = TOPLEFT;
 			break;
 
-		case VertHall:
+		case VERTHALL:
 			buildWall(i, 0);
 			buildWall(i, 1);
+			graph.at(i).patType = VERTHALL;
 			break;
 
-		case HoriHall:
+		case HORIHALL:
 			buildWall(i, 2);
 			buildWall(i, 3);
+			graph.at(i).patType = HORIHALL;
 			break;
 
-		case T_Down:
+		case T_DOWN:
 			buildWall(i, 3);
+			graph.at(i).patType = T_DOWN;
 			break;
 
-		case T_Up:
+		case T_UP:
 			buildWall(i, 2);
+			graph.at(i).patType = T_UP;
 			break;
 
-		case T_2Rght:
+		case T_2RGHT:
 			buildWall(i, 0);
+			graph.at(i).patType = T_2RGHT;
 			break;
 
-		case T_2Left:
+		case T_2LEFT:
 			buildWall(i, 1);
+			graph.at(i).patType = T_2LEFT;
 			break;
 
-		case Intrsectns:
+		case INTRSECTNS:
+			graph.at(i).patType = INTRSECTNS;
 			break;
 
 		default:
@@ -586,6 +691,11 @@ void GameMap::buildGameWall(int i, vertexType type) {
 		// next case
 
 	}
+}
+
+void GameMap::setObjectType(int currVertex, objectType oType) {
+	graph.at(currVertex).itemType = oType;
+	return;
 }
 
 void GameMap::buildWall(int currVertex, int currNeighbor) {

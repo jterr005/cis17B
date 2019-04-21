@@ -5,7 +5,10 @@ using namespace std;
 
 int main() {
 	GameMap testMap;
-	cout << "GameMap Test Complete" << endl << endl;
+	// if(testMap.pathFind(solution, ))
+
+	/* Test Graph with Outputs */
+	testMap.printMap();
 
 	return 0;
 }
