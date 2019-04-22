@@ -2,12 +2,9 @@
 
 // constructs the vector to build the verticies
 GameMap::GameMap() {
-	// FELT CUTE, MIGHT DELETE LATER
-	int edgeIndex = 0;
 	int currX = 0;
 	int currY = -1;
 	graph.reserve(TOTALSIZE);
-	//int upCounter = -1;
 
 	// Loop to build entire game map
 	// as well as connecting all necessary verticies together
@@ -41,8 +38,6 @@ GameMap::GameMap() {
 	for(unsigned i = X_MAX*3; i < TOTALSIZE; ++i) {
 		buildGameWalls(i);
 	}
-
-
 }
 
 /* Deconstructor */
@@ -50,6 +45,10 @@ GameMap::~GameMap() {
 	while(!graph.empty()) {
 		graph.pop_back();
 	}
+}
+
+vector<Vertex>* GameMap::getGraph() {
+	return &graph;
 }
 
 // Function prints all vertexes, their neighbors and their costs to travel
@@ -481,7 +480,7 @@ void GameMap::buildGameWalls(int i) {
 			buildGameWall(i, HORIHALL);
 			setObjectType(i, PACDOT);
 		}
-		if(currY == 6 || currY == 24) {
+		else if(currY == 6 || currY == 24) {
 			if(currX == 11) {
 				buildGameWall(i, BOTLEFT);
 				setObjectType(i, PACDOT);
@@ -491,19 +490,19 @@ void GameMap::buildGameWalls(int i) {
 				setObjectType(i, PACDOT);
 			}
 		}
-		if(currY == 7 || currY == 8 || currY == 13 || currY == 14 || currY == 16 || currY == 17 || currY == 19 || currY == 20 || currY == 25 || currY == 26) {
+		else if(currY == 7 || currY == 8 || currY == 13 || currY == 14 || currY == 16 || currY == 17 || currY == 19 || currY == 20 || currY == 25 || currY == 26) {
 			buildGameWall(i, VERTHALL);
 			setObjectType(i, PACDOT);
 		}
-		if(currY == 9 || currY == 27) {
+		else if(currY == 9 || currY == 27) {
 			buildGameWall(i, T_DOWN);
 			setObjectType(i, PACDOT);
 		}
-		if(currY == 12) {
+		else if(currY == 12) {
 			buildGameWall(i, T_UP);
 			setObjectType(i, PACDOT);
 		}
-		if(currY == 15) {
+		else if(currY == 15) {
 			if(currX == 11) {
 				buildGameWall(i, T_2RGHT);
 				setObjectType(i, PACDOT);
@@ -513,7 +512,7 @@ void GameMap::buildGameWalls(int i) {
 				setObjectType(i, PACDOT);
 			}
 		}
-		if(currY == 18) {
+		else if(currY == 18) {
 			if(currX == 11) {
 				buildGameWall(i, T_2LEFT);
 				setObjectType(i, PACDOT);
@@ -523,7 +522,7 @@ void GameMap::buildGameWalls(int i) {
 				setObjectType(i, PACDOT);
 			}
 		}
-		if(currY == 21) {
+		else if(currY == 21) {
 			if(currX == 11) {
 				buildGameWall(i, TOPLEFT);
 				setObjectType(i, PACDOT);
@@ -534,7 +533,7 @@ void GameMap::buildGameWalls(int i) {
 			}
 		}
 
-		if(currY > 12 || currY < 22) {
+		if(currY > 12 && currY < 22) {
 			setObjectType(i, EMPTY);
 		}
 
@@ -701,4 +700,161 @@ void GameMap::setObjectType(int currVertex, objectType oType) {
 void GameMap::buildWall(int currVertex, int currNeighbor) {
 	graph.at(currVertex).neighbors.at(currNeighbor).second = INT_MAX;
 	return;
+}
+
+int GameMap::pathFind(string& solution, int startX, int startY, int endX, int endY) {
+	//Invalid position if beyond map scope
+	if(startX < 3 || startY < 3 || endX > 28 || endY > 31) {
+		solution = "";
+		return -1;
+	}
+
+	Vertex* startVertex = 0;
+	unsigned startIndex = 0;
+	// Assigns the starting vertex that matches the starting position entered as a parameter
+	for(unsigned i = 0; i < graph.size(); ++i) {
+		if(startX == graph.at(i).position.first && startY == graph.at(i).position.second) {
+			startVertex = &graph.at(i);
+			startIndex = i;
+			break;
+		} 
+	}
+
+	stringstream SS;
+
+	dijkstra(startVertex, startIndex);
+
+	for(unsigned i = 0; i < graph.size(); ++i) {
+		if(graph.at(i).position.first == endX && graph.at(i).position.second == endY) {
+			solutionF(SS, &graph.at(i));
+			solution = SS.str();
+			return 1;
+		}
+	}
+
+	solution = "";
+
+	return 0;
+}
+
+void GameMap::dijkstra(Vertex* start, unsigned startIndex) {
+	InitializeSingleSource(start);
+	vector<Vertex*> cloud;
+	Queue priorityQueue;
+
+	for(unsigned i = 99; i <= 1020; ++i) {
+		if(i == startIndex) {
+			continue;
+		}
+		if(graph.at(i).itemType == PACDOT || graph.at(i).itemType == PACPOWER || graph.at(i).itemType == EMPTY) {
+			priorityQueue.enqueue(&graph.at(i));
+		}
+	}
+
+	priorityQueue.enqueue(start);
+
+	while(!priorityQueue.empty()) {
+		Vertex* u = priorityQueue.end();    // points to vertex at end of queue
+		priorityQueue.dequeue();            // removes vertex from end of queue
+		cloud.push_back(u);
+
+		for(unsigned j = 0; j < u->neighbors.size(); ++j) {
+			relax(u, &graph.at(u->neighbors.at(j).first), u->neighbors.at(j).second);
+
+			for(unsigned k = 0; k < priorityQueue.size(); ++k) {
+				Vertex* end = priorityQueue.end();
+				if(priorityQueue.at(k)->distance < end->distance) {
+					Vertex* v = priorityQueue.at(k);
+					priorityQueue.erase(k);
+					priorityQueue.enqueue(v);
+				}
+			}
+		}
+	}
+}
+
+void GameMap::InitializeSingleSource(Vertex* start) {
+	start->distance = 0;
+	return;
+}
+
+void GameMap::relax(Vertex* u, Vertex* v, int w) {
+	if(w == INT_MAX) {
+		return;
+	}
+	else if(v->distance > u->distance + w) {
+		v->distance = u->distance + w;
+		v->prevV = u;
+	}
+}
+
+void GameMap::solutionF(stringstream& solution, Vertex* current) {
+	Vertex* pre = current->prevV;
+	Vertex* cur = current;
+	stack<string> stacks;
+
+	stringstream success;
+	success << "success " << current->distance;
+	stacks.push(success.str());
+
+	while(cur != 0 && pre != 0) {
+		if(cur->position == graph.at(pre->neighbors.at(0).first).position) {
+			stacks.push("LEFT");
+		}
+		else if(cur->position == graph.at(pre->neighbors.at(1).first).position) {
+			stacks.push("RIGHT");
+		}
+		else if(cur->position == graph.at(pre->neighbors.at(2).first).position) {
+			stacks.push("DOWN");
+		}
+		else if(cur->position == graph.at(pre->neighbors.at(3).first).position) {
+			stacks.push("UP");
+		}
+
+		cur = pre;
+		if(cur != 0) {
+			pre = cur->prevV;
+		}
+	}
+
+	while(!stacks.empty()) {
+		solution << stacks.top();
+		stacks.pop();
+		if(!stacks.empty()) {
+			solution << endl;
+		}
+	}
+}
+
+Queue::Queue() {}
+
+void Queue::enqueue(Vertex* curr) {
+	queue.push_back(curr);
+}
+
+void Queue::dequeue() {
+	queue.pop_back();
+}
+
+bool Queue::empty() {
+	if(queue.empty()) {
+        return true;
+    }
+    return false;
+}
+
+Vertex* Queue::end() {
+    return queue.at(queue.size() - 1);
+}
+
+Vertex* Queue::at(unsigned i) {
+    return queue.at(i);
+} 
+
+unsigned Queue::size() {
+    return queue.size();
+}
+
+void Queue::erase(unsigned i) {
+    queue.erase(queue.begin() + i);
 }

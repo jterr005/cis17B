@@ -7,3 +7,4 @@
 - Juan D Tellez
 - James Ojeda
 - Jason Eastman 
+- Eric Perez
