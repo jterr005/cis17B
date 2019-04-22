@@ -32,7 +32,6 @@ public:
     void updateScore(int s){
         score+=s;
     };
-    void checkMove(char);
 private:
     int position=114;//spawn location of pacman
     int lives=3;
