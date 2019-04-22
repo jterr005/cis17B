@@ -1,5 +1,5 @@
-#ifndef GHOST_H_
-#define GHOST_H_
+#ifndef GHOST_H
+#define GHOST_H
 #include "GhostMap.h"
 
 
