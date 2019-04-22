@@ -1,6 +1,6 @@
 #ifndef GHOST_H
 #define GHOST_H
-#include "GhostMap.h"
+#include "GameMap.h"
 
 
 class Ghost: private GameMap
