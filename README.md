@@ -8,3 +8,4 @@
 - James Ojeda
 - Jason Eastman 
 - Eric Perez
+- Dathan Pompa
