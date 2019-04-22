@@ -6,7 +6,7 @@
 
 /* 
  * File:   Pacman.h
- * Author: op
+ * Author: Eric Perez
  *
  * Created on April 19, 2019, 5:20 AM
  */

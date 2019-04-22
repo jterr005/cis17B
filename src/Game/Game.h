@@ -6,7 +6,7 @@
 
 /* 
  * File:   Game.h
- * Author: op
+ * Author: Eric Perez
  *
  * Created on April 21, 2019, 1:56 PM
  */
