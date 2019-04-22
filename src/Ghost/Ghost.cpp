@@ -1,56 +1,85 @@
-#include "Game.h"
+#include "Ghost.h"
+#include "GhostMap.h"
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-Game::Game() {
-	map = new GameMap;
-	pac = new Pacman;
-	item = new Items;
+
+Ghost::Ghost()
+{
+
 }
 
-Game::Game(const Game& orig) {
-}
+//moves 0up, 1down, 2left, 3right
+//change to enum later
+void Ghost::udlr()
+{
+	int rmove;
 
-Game::~Game() {
-}
+	srand(time(NULL));
 
-void Game::checkMove(char key) {
-	//Will later add event listener to call checkMove
-	int thatPos;
-	int limit;
-	int pacPos = pac->getLocation();
-	switch (key) {
-	case 'a'://Left key
-		thatPos = map->getGraph()->at(pacPos).neighbors[0].first;
-		limit = map->getGraph()->at(pacPos).neighbors[0].second;
-		break;
-	case 'd'://Right key
-		thatPos = map->getGraph()->at(pacPos).neighbors[1].first;
-		limit = map->getGraph()->at(pacPos).neighbors[1].second;
+	rmove = (rand() % 3);
 
-		break;
-	case 's'://Down key
-		thatPos = map->getGraph()->at(pacPos).neighbors[2].first;
-		limit = map->getGraph()->at(pacPos).neighbors[2].second;
-
-		break;
-	case 'w'://Up key
-		thatPos = map->getGraph()->at(pacPos).neighbors[3].first;
-		limit = map->getGraph()->at(pacPos).neighbors[3].second;
-
-		break;
-	default:
-		break;
+	if ( rmove== 0)
+	{
+		dir = 0;
 	}
-	if (limit != INT_MAX) {//If limit is INF then that means the location we are trying to move to is a wall 
-		if (map->getGraph()->at(thatPos).type == PACDOT) {
-			map->getGraph()->at(thatPos).type = EMPTY;
-			pac->updateScore(10);
-		}
-		else if (map->getGraph()->at(thatPos).type == POWER) {
-			map->getGraph()->at(thatPos).type = EMPTY;
-			pac->updateScore(50);
-		}
-		pac->setLocation(thatPos); //Changes position of pacman to the location of the item
-		return;
+	else if (rmove == 1)
+	{
+		dir = 1;
 	}
-	return;
+	if (rmove == 2)
+	{
+		dir = 2;
+	}
+	else if (rmove == 3)
+	{
+		dir = 3;
+	}
+
+}
+
+//what happens when it hits a wall
+void Ghost::move(int num)
+{
+	GameMap graph;
+	int a, b;
+	if (num == 0)
+	{
+		if (graph.at(240) != HORIHALL || VERTHALL)
+		{
+			graph.at(240+1) = 'G';
+
+			if (graph.at(240) == HORIHALL)
+			{
+				a = rand() % 2;
+				switch (a)
+				{
+				case 0:
+					dir = 0;
+					break;
+				case 1:
+					dir = 1;
+					break;
+				}
+			}
+			else if (graph.at(240) == VERTHALL)
+			{
+				b = rand() % 2;
+				switch (b)
+				{
+				case 0:
+					dir = 2;
+					break;
+				case 1:
+					dir = 3;
+					break;
+				}
+			}
+
+			}
+		}
+
+	}
+
 }
