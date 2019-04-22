@@ -1,20 +1,18 @@
-#ifndef GHOST_H
-#define GHOST_H
+#ifndef GHOST_H_
+#define GHOST_H_
+#include "GhostMap.h"
 
-class Ghost
+
+class Ghost: private GameMap
 {
 private:
-  int startX;
-  int startY;
-  int newPos;
-  int dir;
- public:
-  Ghost();
-  void randGhost();
-  void scatter();
-  void chase();
-  void fear();
-  void death();
-}
+	int dir;
+	int position = 240;
+
+public:
+	Ghost();
+	void udlr();
+	void move(int num);
+};
 
 #endif
