@@ -43,6 +43,7 @@ void Ghost::udlr()
 void Ghost::move(int num)
 {
 	GameMap graph;
+
 	int a, b;
 	if (num == 0)
 	{
@@ -77,9 +78,120 @@ void Ghost::move(int num)
 				}
 			}
 
-			}
+			
 		}
 
 	}
 
+	if (num == 1)
+	{
+		if (graph.at(240) != HORIHALL || VERTHALL)
+		{
+			graph.at(240 + 1) = 'G';
+
+			if (graph.at(240) == HORIHALL)
+			{
+				a = rand() % 2;
+				switch (a)
+				{
+				case 0:
+					dir = 0;
+					break;
+				case 1:
+					dir = 1;
+					break;
+				}
+			}
+			else if (graph.at(240) == VERTHALL)
+			{
+				b = rand() % 2;
+				switch (b)
+				{
+				case 0:
+					dir = 2;
+					break;
+				case 1:
+					dir = 3;
+					break;
+				}
+			}
+
+		}
+	}
+
+	if (num == 2)
+	{
+		if (graph.at(240) != HORIHALL || VERTHALL)
+		{
+			graph.at(240 + 1) = 'G';
+
+			if (graph.at(240) == HORIHALL)
+			{
+				a = rand() % 2;
+				switch (a)
+				{
+				case 0:
+					dir = 0;
+					break;
+				case 1:
+					dir = 1;
+					break;
+				}
+			}
+			else if (graph.at(240) == VERTHALL)
+			{
+				b = rand() % 2;
+				switch (b)
+				{
+				case 0:
+					dir = 2;
+					break;
+				case 1:
+					dir = 3;
+					break;
+				}
+			}
+
+		}
+	}
+
+	if (num == 3)
+	{
+		if (graph.at(240) != HORIHALL || VERTHALL)
+		{
+			graph.at(240 + 1) = 'G';
+
+			if (graph.at(240) == HORIHALL)
+			{
+				a = rand() % 2;
+				switch (a)
+				{
+				case 0:
+					dir = 0;
+					break;
+				case 1:
+					dir = 1;
+					break;
+				}
+			}
+			else if (graph.at(240) == VERTHALL)
+			{
+				b = rand() % 2;
+				switch (b)
+				{
+				case 0:
+					dir = 2;
+					break;
+				case 1:
+					dir = 3;
+					break;
+				}
+			}
+
+		}
+	}
+
+
 }
+
+
