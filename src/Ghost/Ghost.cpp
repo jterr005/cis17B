@@ -7,7 +7,6 @@
 
 Ghost::Ghost()
 {
-
 }
 
 //moves 0up, 1down, 2left, 3right
